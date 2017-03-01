@@ -1,0 +1,79 @@
+apply plugin: 'android'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.1.3'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:18.0.+'
+    compile project(':thirdparty:locale-api')
+}
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '25.0.2'
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 25
+    }
+	signingConfigs {
+        debug {
+            storeFile file("C:\Users\graham\.android\debug.keystore")
+        }
+
+        release {
+            if (project.hasProperty('storeFile')) {
+                storeFile file(project.storeFile)
+            } else {
+                storeFile System.console().readLine("\n\$ Enter keystore path: ")
+            }
+
+            if (project.hasProperty('storePassword')) {
+                storePassword = project.storePassword
+            } else {
+                storePassword System.console().readLine("\n\$ Enter keystore password: ")
+            }
+
+            if (project.hasProperty('keyAlias')) {
+                keyAlias = project.keyAlias
+            } else {
+                keyAlias System.console().readLine("\n\$ Enter key alias: ")
+            }
+
+            if (project.hasProperty('keyPassword')) {
+                keyPassword = project.keyPassword
+            } else {
+                keyPassword System.console().readLine("\n\$ Enter key password: ")
+            }
+        }
+    }
+    buildTypes {
+        release {
+            proguardFile 'proguard-android.txt'
+            zipAlignEnabled true
+        }
+        debug {
+            proguardFile 'proguard-android.txt'
+            zipAlignEnabled true
+        }
+    }
+    lintOptions {
+        // turn off checking the given issue id's
+        disable 'InvalidPackage'
+    }
+    productFlavors {
+    }
+}
+
+task wrapper(type: org.gradle.api.tasks.wrapper.Wrapper) {
+    gradleVersion = '2.1.3'
+}
