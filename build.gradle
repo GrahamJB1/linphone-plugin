@@ -24,46 +24,53 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 25
+        versionCode 2
+        versionName "1.0.1"
     }
-	signingConfigs {
+    signingConfigs {
         debug {
-            storeFile file("C:\Users\graham\.android\debug.keystore")
+            storeFile file("C:/Users/graham/.android/debug.keystore")
         }
-
         release {
             if (project.hasProperty('storeFile')) {
                 storeFile file(project.storeFile)
             } else {
-                storeFile System.console().readLine("\n\$ Enter keystore path: ")
+                storeFile file(System.console().readLine("\n\$ Enter keystore path: "))
             }
-
             if (project.hasProperty('storePassword')) {
                 storePassword = project.storePassword
             } else {
                 storePassword System.console().readLine("\n\$ Enter keystore password: ")
             }
-
             if (project.hasProperty('keyAlias')) {
                 keyAlias = project.keyAlias
             } else {
                 keyAlias System.console().readLine("\n\$ Enter key alias: ")
             }
-
             if (project.hasProperty('keyPassword')) {
                 keyPassword = project.keyPassword
             } else {
                 keyPassword System.console().readLine("\n\$ Enter key password: ")
             }
+            keyAlias 'AndroidApps'
+            keyPassword 'gt9100'
+            storeFile file('C:/dev/android/keystore/android.jks')
+            storePassword 'Klantaan9100'
         }
     }
     buildTypes {
         release {
-            proguardFile 'proguard-android.txt'
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles 'proguard-android.txt'
+            signingConfig signingConfigs.release
             zipAlignEnabled true
+            debuggable false
         }
         debug {
             proguardFile 'proguard-android.txt'
             zipAlignEnabled true
+            debuggable false
         }
     }
     lintOptions {

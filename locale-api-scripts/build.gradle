@@ -27,14 +27,14 @@ android {
 
     signingConfigs {
         debug {
-            storeFile file("/home/lukas/.android/debug.keystore")
+            storeFile file("C:/Users/graham/.android/debug.keystore")
         }
 
         release {
             if (project.hasProperty('storeFile')) {
                 storeFile file(project.storeFile)
             } else {
-                storeFile System.console().readLine("\n\$ Enter keystore path: ")
+                storeFile file(System.console().readLine("\n\$ Enter keystore path: "))
             }
 
             if (project.hasProperty('storePassword')) {
@@ -59,10 +59,11 @@ android {
 
     buildTypes {
         release {
-            runProguard true
-            proguardFile getDefaultProguardFile('proguard-android.txt')
-            proguardFile 'proguard-android.txt'
-            signingConfig signingConfigs.release
+			minifyEnabled false
+			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles 'proguard-android.txt'
+			signingConfig signingConfigs.release
+            zipAlignEnabled true
         }
     }
 
