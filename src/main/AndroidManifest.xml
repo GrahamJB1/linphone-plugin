@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="uk.co.systemdevelopment.linphone.taskerplugin" >
+
+    <uses-permission android:name="android.permission.USE_SIP" />
+	
+    <uses-sdk
+        android:minSdkVersion="19"
+        android:targetSdkVersion="23" />
+
+    <application
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" 
+		android:icon="@drawable/ic_launcher" >
+        <activity
+            android:name=".EditActivity"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/app_name"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
+            </intent-filter>
+        </activity>
+        <!-- Listen for the "fire" action -->
+        <receiver android:name=".FireReceiver"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.FIRE_SETTING" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>
