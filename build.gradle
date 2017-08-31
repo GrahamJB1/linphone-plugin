@@ -24,8 +24,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 12
-        versionName "1.2.0"
+        versionCode 14
+        versionName "1.4.0"
     }
     signingConfigs {
         debug {
@@ -53,9 +53,7 @@ android {
                 keyPassword System.console().readLine("\n\$ Enter key password: ")
             }
             keyAlias 'AndroidApps'
-            keyPassword 'xxxx'
             storeFile file('C:/dev/android/keystore/android.jks')
-            storePassword 'xxxxxx'
         }
     }
     buildTypes {

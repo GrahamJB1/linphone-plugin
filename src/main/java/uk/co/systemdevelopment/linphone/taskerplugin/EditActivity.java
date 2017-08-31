@@ -92,6 +92,15 @@ public class EditActivity extends Activity {
 
         return super.onMenuItemSelected(featureId, item);
 	}
+	
+	long tryParseLong(String value) {  
+     try {  
+         return Long.parseLong(value);  
+      } catch (NumberFormatException e) 
+	  {  
+         return 0;  
+      }
+	}	  
 
     /**
      * {@inheritDoc}
@@ -105,7 +114,7 @@ public class EditActivity extends Activity {
         }
         else
         {
-            final long account_id = Long.parseLong(((EditText) findViewById(R.id.account_id)).getText().toString());
+            final long account_id = tryParseLong(((EditText) findViewById(R.id.account_id)).getText().toString());
             final boolean deactivate = ((CheckBox) findViewById(R.id.account_deactivate)).isChecked();
 
             /*
