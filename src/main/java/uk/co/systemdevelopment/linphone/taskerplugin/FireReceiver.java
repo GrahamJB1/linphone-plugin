@@ -25,8 +25,11 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import java.util.List;
 import android.widget.Toast;
+import android.content.ComponentName;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 
 /**
  * This is the "fire" BroadcastReceiver for a Locale Plug-in setting.
@@ -52,12 +55,15 @@ public final class FireReceiver extends BroadcastReceiver
 		 * malformed Intent. And since Locale applies settings in the background, the plug-in definitely shouldn't crash in the
 		 * background.
 		 */
+		 
+		 Log.d(TAG, "Received intent");
 
 		/*
 		 * Locale guarantees that the Intent action will be ACTION_FIRE_SETTING
 		 */
 		if (!com.twofortyfouram.locale.Intent.ACTION_FIRE_SETTING.equals(intent.getAction()))
 		{
+			Log.d(TAG, "Ignoring intent as [" + intent.getAction() + "] does not match [" + com.twofortyfouram.locale.Intent.ACTION_FIRE_SETTING + "]");
 			return;
 		}
 
@@ -89,6 +95,21 @@ public final class FireReceiver extends BroadcastReceiver
 		Intent broadcastIntent = new Intent(INTENT_NAME);
 		broadcastIntent.putExtra("id", account_id);
 		broadcastIntent.putExtra("active", !deactivate);
-		context.sendBroadcast(broadcastIntent);
+		FireReceiver.sendImplicitBroadcast(context, broadcastIntent);
+	}
+	
+	private static void sendImplicitBroadcast(Context ctxt, Intent i) {
+	  PackageManager pm=ctxt.getPackageManager();
+	  List<ResolveInfo> matches=pm.queryBroadcastReceivers(i, 0);
+
+	  for (ResolveInfo resolveInfo : matches) {
+		Intent explicit=new Intent(i);
+		ComponentName cn=
+		  new ComponentName(resolveInfo.activityInfo.applicationInfo.packageName,
+			resolveInfo.activityInfo.name);
+
+		explicit.setComponent(cn);
+		ctxt.sendBroadcast(explicit);
+	  }
 	}
 }
